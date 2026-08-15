@@ -12,11 +12,17 @@ export const Route = createFileRoute("/_dash/performance")({
 function Performance() {
   const m = useMarket();
   const s = m.stats;
+  const sorted = [...m.trades].sort((a, b) => a.closedAt - b.closedAt);
   let cum = 0;
-  const curve = [...m.trades].sort((a, b) => a.closedAt - b.closedAt).map((t) => (cum += t.pnl));
+  const curve = sorted.map((t) => (cum += t.pnl));
   const max = Math.max(...curve, 1);
   const min = Math.min(...curve, 0);
-  const path = curve.map((v, i) => `${(i / Math.max(curve.length - 1, 1)) * 100},${100 - ((v - min) / (max - min || 1)) * 100}`).join(" ");
+  const path = curve
+    .map((v, i) => `${(i / Math.max(curve.length - 1, 1)) * 100},${100 - ((v - min) / (max - min || 1)) * 100}`)
+    .join(" ");
+  const recent = sorted.slice(-20);
+  const peak = Math.max(...recent.map((t) => Math.abs(t.pnl)), 1);
+
   return (
     <div>
       <PageHeader title="Performance" subtitle="Simulated results — not investment advice" />
@@ -36,16 +42,16 @@ function Performance() {
             <polyline points={path} fill="none" stroke="var(--ai)" strokeWidth="0.8" vectorEffect="non-scaling-stroke" />
           </svg>
         </Panel>
-        <Panel title="Daily P&L">
+        <Panel title="Last 20 trades">
           <div className="flex h-52 items-end gap-1">
-            {m.dailyPnl.map((d) => {
-              const peak = Math.max(...m.dailyPnl.map((x) => Math.abs(x.pnl)), 1);
-              return (
-                <div key={d.date} title={`${d.date}: ${fmtInr(d.pnl)}`} className="flex-1">
-                  <div className={cn("mx-auto w-full rounded-[2px]", d.pnl >= 0 ? "bg-bull/70" : "bg-bear/70")} style={{ height: `${(Math.abs(d.pnl) / peak) * 180}px` }} />
-                </div>
-              );
-            })}
+            {recent.map((t) => (
+              <div key={t.id} title={fmtInr(t.pnl)} className="flex-1">
+                <div
+                  className={cn("mx-auto w-full rounded-[2px]", t.pnl >= 0 ? "bg-bull/70" : "bg-bear/70")}
+                  style={{ height: `${(Math.abs(t.pnl) / peak) * 180}px` }}
+                />
+              </div>
+            ))}
           </div>
         </Panel>
       </div>
