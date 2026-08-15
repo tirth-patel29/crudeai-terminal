@@ -15,6 +15,7 @@ import { Route as DashAutoTradingRouteImport } from './routes/_dash.auto-trading
 import { Route as DashDashboardRouteImport } from './routes/_dash.dashboard'
 import { Route as DashHistoryRouteImport } from './routes/_dash.history'
 import { Route as DashOrdersRouteImport } from './routes/_dash.orders'
+import { Route as DashPerformanceRouteImport } from './routes/_dash.performance'
 import { Route as DashPositionsRouteImport } from './routes/_dash.positions'
 import { Route as DashPredictionsRouteImport } from './routes/_dash.predictions'
 import { Route as DashStrategiesRouteImport } from './routes/_dash.strategies'
@@ -50,6 +51,11 @@ const DashOrdersRoute = DashOrdersRouteImport.update({
   path: '/orders',
   getParentRoute: () => DashRoute,
 } as any)
+const DashPerformanceRoute = DashPerformanceRouteImport.update({
+  id: '/performance',
+  path: '/performance',
+  getParentRoute: () => DashRoute,
+} as any)
 const DashPositionsRoute = DashPositionsRouteImport.update({
   id: '/positions',
   path: '/positions',
@@ -82,6 +88,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashDashboardRoute
   '/history': typeof DashHistoryRoute
   '/orders': typeof DashOrdersRoute
+  '/performance': typeof DashPerformanceRoute
   '/positions': typeof DashPositionsRoute
   '/predictions': typeof DashPredictionsRoute
   '/strategies': typeof DashStrategiesRoute
@@ -94,6 +101,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashDashboardRoute
   '/history': typeof DashHistoryRoute
   '/orders': typeof DashOrdersRoute
+  '/performance': typeof DashPerformanceRoute
   '/positions': typeof DashPositionsRoute
   '/predictions': typeof DashPredictionsRoute
   '/strategies': typeof DashStrategiesRoute
@@ -108,6 +116,7 @@ export interface FileRoutesById {
   '/_dash/dashboard': typeof DashDashboardRoute
   '/_dash/history': typeof DashHistoryRoute
   '/_dash/orders': typeof DashOrdersRoute
+  '/_dash/performance': typeof DashPerformanceRoute
   '/_dash/positions': typeof DashPositionsRoute
   '/_dash/predictions': typeof DashPredictionsRoute
   '/_dash/strategies': typeof DashStrategiesRoute
@@ -122,6 +131,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/history'
     | '/orders'
+    | '/performance'
     | '/positions'
     | '/predictions'
     | '/strategies'
@@ -134,6 +144,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/history'
     | '/orders'
+    | '/performance'
     | '/positions'
     | '/predictions'
     | '/strategies'
@@ -147,6 +158,7 @@ export interface FileRouteTypes {
     | '/_dash/dashboard'
     | '/_dash/history'
     | '/_dash/orders'
+    | '/_dash/performance'
     | '/_dash/positions'
     | '/_dash/predictions'
     | '/_dash/strategies'
@@ -203,6 +215,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashOrdersRouteImport
       parentRoute: typeof DashRoute
     }
+    '/_dash/performance': {
+      id: '/_dash/performance'
+      path: '/performance'
+      fullPath: '/performance'
+      preLoaderRoute: typeof DashPerformanceRouteImport
+      parentRoute: typeof DashRoute
+    }
     '/_dash/positions': {
       id: '/_dash/positions'
       path: '/positions'
@@ -246,6 +265,7 @@ interface DashRouteChildren {
   DashDashboardRoute: typeof DashDashboardRoute
   DashHistoryRoute: typeof DashHistoryRoute
   DashOrdersRoute: typeof DashOrdersRoute
+  DashPerformanceRoute: typeof DashPerformanceRoute
   DashPositionsRoute: typeof DashPositionsRoute
   DashPredictionsRoute: typeof DashPredictionsRoute
   DashStrategiesRoute: typeof DashStrategiesRoute
@@ -258,6 +278,7 @@ const DashRouteChildren: DashRouteChildren = {
   DashDashboardRoute: DashDashboardRoute,
   DashHistoryRoute: DashHistoryRoute,
   DashOrdersRoute: DashOrdersRoute,
+  DashPerformanceRoute: DashPerformanceRoute,
   DashPositionsRoute: DashPositionsRoute,
   DashPredictionsRoute: DashPredictionsRoute,
   DashStrategiesRoute: DashStrategiesRoute,
